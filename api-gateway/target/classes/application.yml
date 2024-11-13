@@ -1,0 +1,30 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: employee-svcs
+          uri: lb://EMPLOYEE-SVCS
+          predicates:
+            - Path=/employee/**
+          filters:
+            - AuthenticationFilter
+
+        - id: organization-svcs
+          uri: lb://ORGANIZATION-SVCS
+          predicates:
+            - Path=/organization/**
+          filters:
+            - AuthenticationFilter
+
+        - id: authentication-svcs
+          uri: lb://IDENTITY-SERVICE
+          predicates:
+            - Path=/auth/**
+
+  application:
+    name: API-GATEWAY
+
+eureka:
+  client:
+    service-url:
+      defaultZone : http://localhost:8761/eureka/
